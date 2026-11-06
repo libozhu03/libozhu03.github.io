@@ -1,0 +1,26 @@
+{
+  "url": "https://libozhu03.github.io",
+  "description": "Libo Zhu (朱力博), PhD student at Shanghai Jiao Tong University. Research interests in efficient diffusion models, image restoration, and model quantization.",
+  "profile": {
+    "name": "Libo Zhu",
+    "nameNative": "朱力博",
+    "role": "PhD Student",
+    "department": "Computer Science and Technology",
+    "institution": "Shanghai Jiao Tong University",
+    "institutionUrl": "https://www.sjtu.edu.cn/",
+    "portrait": "/assets/portrait.jpg",
+    "email": "labor030073@gmail.com",
+    "github": "https://github.com/libozhu03",
+    "bio": [
+      "I am a PhD student in Computer Science and Technology at Shanghai Jiao Tong University. My research interests include efficient diffusion models, image restoration, and model quantization.",
+      "I received my B.Eng. in Information Engineering from Shanghai Jiao Tong University in 2025."
+    ],
+    "interests": ["Efficient diffusion models", "Image restoration", "Model quantization"],
+    "education": [
+      { "degree": "PhD · Computer Science and Technology", "institution": "Shanghai Jiao Tong University", "period": "2025–present" },
+      { "degree": "B.Eng. · Information Engineering", "institution": "Shanghai Jiao Tong University", "period": "2021–2025" }
+    ]
+  },
+  "publications": [],
+  "projects": []
+}
