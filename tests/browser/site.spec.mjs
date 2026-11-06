@@ -78,3 +78,19 @@ test('all fragment navigation targets exist and content has one main heading', a
   expect(await page.locator('h1').count()).toBe(1);
   expect(await page.locator('a[href^="#"]').evaluateAll(links=>links.every(link=>document.getElementById(link.hash.slice(1))))).toBe(true);
 });
+
+test('navigation highlights the same section regardless of scroll direction', async ({page})=>{
+  await page.setViewportSize({width:1440,height:600});
+  await page.goto('/');
+  await page.evaluate(()=>document.fonts.ready);
+  const scroll = y => page.evaluate(y=>new Promise(resolve=>{
+    window.scrollTo(0,y);
+    requestAnimationFrame(()=>requestAnimationFrame(resolve));
+  }),y);
+  await scroll(500);
+  const active=await page.locator('nav [aria-current]').textContent();
+  await scroll(850);
+  await scroll(700);
+  await scroll(500);
+  await expect(page.locator('nav [aria-current]')).toHaveText(active);
+});

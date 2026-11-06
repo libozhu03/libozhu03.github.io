@@ -29,17 +29,24 @@ matchMedia('(min-width: 761px)').addEventListener('change', closeMenu);
 
 const navLinks = [...navigation.querySelectorAll('a')];
 const sections = [...document.querySelectorAll('main > section')];
-if ('IntersectionObserver' in window) {
-  const observer = new IntersectionObserver(entries => {
-    const visible = entries.filter(entry=>entry.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top);
-    if (!visible.length) return;
-    for (const anchor of navLinks) {
-      if (anchor.hash === `#${visible[0].target.id}`) anchor.setAttribute('aria-current','location');
-      else anchor.removeAttribute('aria-current');
-    }
-  }, {rootMargin:'-70px 0px -50% 0px',threshold:0});
-  sections.forEach(section=>observer.observe(section));
+let navigationFrame = 0;
+function updateActiveSection() {
+  navigationFrame = 0;
+  const threshold = document.querySelector('.site-header').getBoundingClientRect().bottom + 28;
+  const atBottom = Math.ceil(window.scrollY + window.innerHeight) >= document.documentElement.scrollHeight - 2;
+  const active = atBottom ? sections.at(-1) : sections.findLast(section=>section.getBoundingClientRect().top <= threshold) || sections[0];
+  for (const anchor of navLinks) {
+    if (anchor.hash === `#${active.id}`) anchor.setAttribute('aria-current','location');
+    else anchor.removeAttribute('aria-current');
+  }
 }
+function scheduleNavigationUpdate() {
+  if (!navigationFrame) navigationFrame = requestAnimationFrame(updateActiveSection);
+}
+window.addEventListener('scroll', scheduleNavigationUpdate, {passive:true});
+window.addEventListener('resize', scheduleNavigationUpdate);
+window.addEventListener('load', scheduleNavigationUpdate);
+updateActiveSection();
 
 const filters = document.querySelector('.project-filters');
 if (filters) {
