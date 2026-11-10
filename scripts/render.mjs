@@ -11,6 +11,9 @@ function safeUrl(value, { image = false } = {}) {
 }
 
 const icons = {
+  dblp: '<path fill="currentColor" stroke="none" d="m4 2 8 4v8l-8-4Zm9 7 7 4v9l-7-4ZM4 12l7 4-7 4Zm9-10 7 4-7 3Z"/>',
+  orcid: '<circle cx="12" cy="12" r="10"/><circle cx="7.5" cy="7" r=".8" fill="currentColor" stroke="none"/><path d="M7.5 10v7m4-10v10h2a5 5 0 0 0 0-10Z"/>',
+  linkedin: '<rect x="2" y="2" width="20" height="20" rx="2"/><circle cx="7" cy="7" r="1" fill="currentColor" stroke="none"/><path d="M7 11v7m5-7v7m0-4a3 3 0 0 1 6 0v4"/>',
   mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/>',
   github: '<path fill="currentColor" stroke="none" d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.55.1.76-.24.76-.54v-2.1c-3.09.67-3.74-1.31-3.74-1.31-.5-1.28-1.23-1.62-1.23-1.62-1.01-.69.08-.68.08-.68 1.12.08 1.7 1.15 1.7 1.15.99 1.7 2.6 1.21 3.23.92.1-.72.39-1.21.7-1.49-2.47-.28-5.06-1.23-5.06-5.49 0-1.21.43-2.2 1.14-2.98-.12-.28-.5-1.41.11-2.94 0 0 .93-.3 3.05 1.14A10.6 10.6 0 0 1 12 6.22c.94 0 1.88.13 2.76.37 2.12-1.44 3.05-1.14 3.05-1.14.61 1.53.23 2.66.11 2.94.71.78 1.14 1.77 1.14 2.98 0 4.27-2.6 5.21-5.08 5.49.4.35.75 1.02.75 2.06v3.07c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z"/>',
   education: '<path d="m2 9 10-5 10 5-10 5-10-5Z"/><path d="M6 11v6c4 3 8 3 12 0v-6M22 9v7"/>',
@@ -154,6 +157,7 @@ export function renderSite(site) {
             ${email ? `<a href="${escape(email)}" aria-label="Email ${escape(p.name)}">${icon('mail')}</a>` : ''}
             ${github ? `<a href="${escape(github)}" aria-label="GitHub profile">${icon('github')}</a>` : ''}
             ${p.scholar && safeUrl(p.scholar) ? `<a href="${escape(safeUrl(p.scholar))}" aria-label="Google Scholar profile" title="Google Scholar">${icon('education')}</a>` : ''}
+            ${[['dblp','DBLP'],['orcid','ORCID'],['linkedin','LinkedIn']].map(([key,label])=>p[key] && safeUrl(p[key]) ? `<a href="${escape(safeUrl(p[key]))}" aria-label="${label} profile" title="${label}">${icon(key)}</a>` : '').join('')}
             ${p.cv && safeUrl(p.cv) ? link('CV',p.cv) : ''}
           </div>
         </div>
