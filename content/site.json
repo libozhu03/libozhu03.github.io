@@ -17,7 +17,7 @@
     "orcid": "https://orcid.org/0009-0005-3195-2084",
     "linkedin": "https://www.linkedin.com/in/%E5%8A%9B%E5%8D%9A-%E6%9C%B1-b6b53944a/",
     "bio": [
-      "I am a PhD student at Shanghai Jiao Tong University, working on efficient diffusion models, image restoration, and model quantization."
+      "I am a PhD student at Shanghai Jiao Tong University, advised by Prof. Yulun Zhang. My research focuses on efficient diffusion models, image restoration, and model quantization."
     ],
     "interests": ["Efficient diffusion models", "Image restoration", "Model quantization"],
     "advisor": {"name":"Yulun Zhang","url":"https://yulunzhang.com/","position":"Associate Professor, Ph.D. Advisor","institution":"Shanghai Jiao Tong University"},
