@@ -123,15 +123,15 @@ export function renderSite(site) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>${escape(p.name)} | ${escape(p.institution)}</title>
+  <title>${escape(p.name)}</title>
   <meta name="description" content="${escape(site.description)}">
   <meta name="theme-color" content="#ffffff">
   <link rel="canonical" href="${escape(canonical)}">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="${escape(p.name)} — Academic Homepage">
+  <meta property="og:title" content="${escape(p.name)}">
   <meta property="og:description" content="${escape(site.description)}">
   <meta property="og:url" content="${escape(canonical)}">
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="icon" type="image/png" href="/assets/branding/labor-icon.png">
   <link rel="preload" href="/assets/fonts/roboto-400.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/fonts/montserrat-400.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="/assets/styles.css">
@@ -140,7 +140,7 @@ export function renderSite(site) {
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header"><div class="container nav-shell">
-    <a class="brand" href="#about">${escape(p.name)}</a>
+    <a class="brand" href="#about" aria-label="${escape(p.name)} — Home"><img class="brand-logo" src="/assets/branding/labor-lockup.png" alt="Labor" width="2172" height="724"></a>
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open navigation">${icon('menu')}</button>
     <nav id="primary-navigation" aria-label="Main navigation">${navItems.map(([id,label]) => `<a href="#${id}"${id==='about'?' aria-current="location"':''}>${label}</a>`).join('')}</nav>
   </div></header>
