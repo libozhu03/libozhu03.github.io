@@ -47,20 +47,3 @@ window.addEventListener('scroll', scheduleNavigationUpdate, {passive:true});
 window.addEventListener('resize', scheduleNavigationUpdate);
 window.addEventListener('load', scheduleNavigationUpdate);
 updateActiveSection();
-
-const filters = document.querySelector('.project-filters');
-if (filters) {
-  const projects = [...document.querySelectorAll('[data-project]')];
-  filters.addEventListener('click', event => {
-    const button = event.target.closest('button[data-filter]');
-    if (!button) return;
-    const category = button.dataset.filter;
-    let count = 0;
-    for (const item of projects) {
-      item.hidden = Boolean(category) && !JSON.parse(item.dataset.categories).includes(category);
-      if (!item.hidden) count += 1;
-    }
-    filters.querySelectorAll('button').forEach(item=>item.setAttribute('aria-pressed',String(item === button)));
-    document.querySelector('#project-status').textContent = `${count} ${count === 1 ? 'project' : 'projects'} shown${category ? ` in ${category}` : ''}.`;
-  });
-}

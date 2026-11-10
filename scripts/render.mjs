@@ -29,33 +29,89 @@ function resources(links = []) {
   return valid.length ? `<div class="resource-links">${valid.map(item => link(item.label, item.url, 'resource-link')).join('')}</div>` : '';
 }
 
-function publication(item) {
+function publication(item, profileName) {
   const imageUrl = safeUrl(item.image, { image:true });
   const titleUrl = safeUrl(item.url) || safeUrl(item.links?.[0]?.url);
+  const authors = (item.authors || []).map(author => {
+    const name = typeof author === 'string' ? author : author.name;
+    const marks = typeof author === 'string' ? '' : `${author.equal ? '*' : ''}${author.corresponding ? '†' : ''}`;
+    return `${name === profileName ? `<strong>${escape(name)}</strong>` : escape(name)}${marks ? `<sup>${marks}</sup>` : ''}`;
+  }).join(', ');
   return `<article class="publication${imageUrl ? ' has-image' : ''}">
+    ${imageUrl ? `<a class="publication-visual${item.acceptedConference ? ' has-conference' : ''}" href="${escape(titleUrl || imageUrl)}" aria-label="${escape(item.title)} — ${titleUrl ? 'paper details' : 'view figure'}">${item.acceptedConference ? `<span class="conference-badge">${escape(item.acceptedConference)}</span>` : ''}<img class="publication-image" src="${escape(imageUrl)}" alt="${escape(item.imageAlt || item.title)}" width="${escape(item.imageWidth || 1000)}" height="${escape(item.imageHeight || 600)}" loading="lazy"></a>` : ''}
     <div class="publication-copy"><h3>${link(item.title, titleUrl)}</h3>
-    ${item.authors?.length ? `<p class="authors">${escape(item.authors.join(', '))}</p>` : ''}
-    <p class="venue">${escape([item.venue, item.year].filter(Boolean).join(' · '))}</p>
-    ${item.description ? `<p class="publication-description">${escape(item.description)}</p>` : ''}
-    ${resources(item.links)}</div>
-    ${imageUrl ? `<img class="publication-image" src="${escape(imageUrl)}" alt="${escape(item.imageAlt || item.title)}" width="180" height="120" loading="lazy">` : ''}
+    ${authors ? `<p class="authors">${authors}</p>` : ''}
+    ${item.venue || item.year || item.links?.length ? `<div class="publication-meta">${item.venue || item.year ? `<p class="venue">${item.acceptedConference ? `In <em>${escape(item.acceptedConference)}</em>` : escape([item.venue, item.year].filter(Boolean).join(' · '))}</p>` : ''}${resources(item.links)}</div>` : ''}</div>
   </article>`;
 }
 
-function project(item) {
-  const imageUrl = safeUrl(item.image, { image:true });
-  return `<article class="project" data-project data-categories="${escape(JSON.stringify(item.categories || []))}">
-    ${imageUrl ? `<img class="project-image" src="${escape(imageUrl)}" alt="${escape(item.imageAlt || item.title)}" width="600" height="400" loading="lazy">` : ''}
-    <div class="project-copy"><h3>${link(item.title, item.url)}</h3>
-    ${item.description ? `<p>${escape(item.description)}</p>` : ''}${resources(item.links)}</div>
-  </article>`;
+function publicationList(items, profileName) {
+  const newestFirst = (a,b) => String(b.sortDate || b.year || '').localeCompare(String(a.sortDate || a.year || ''))
+    || String(b.firstPublished || '').localeCompare(String(a.firstPublished || ''));
+  const latest = items.filter(item=>item.latest).sort(newestFirst);
+  const remaining = items.filter(item=>!item.latest).sort((a,b)=>Number(Boolean(b.acceptedConference))-Number(Boolean(a.acceptedConference)) || newestFirst(a,b));
+  return `${latest.length ? `<div class="latest-publications" aria-labelledby="latest-publications-heading"><h3 class="publication-group-heading" id="latest-publications-heading">Latest</h3><div class="publication-list">${latest.map(item=>publication(item,profileName)).join('')}</div></div>${remaining.length ? '<hr class="publication-divider">' : ''}` : ''}
+    ${remaining.length ? `<div class="publication-list publication-archive">${remaining.map(item=>publication(item,profileName)).join('')}</div>` : ''}`;
+}
+
+function contentChecklist(site, key) {
+  const items = site.contentOutline?.enabled ? site.contentOutline[key] : [];
+  if (!items?.length) return '';
+  return `<aside class="content-checklist" lang="zh-Hans" aria-label="本栏内容清单"><p class="checklist-label">内容清单 · 待整理</p><ul>${items.map(item=>`<li>${escape(item)}</li>`).join('')}</ul></aside>`;
+}
+
+function internship(entry) {
+  const logo = safeUrl(entry.logo, { image:true });
+  return `<li class="internship-entry">
+    ${logo ? `<img class="internship-logo" src="${escape(logo)}" alt="${escape(entry.organization)} logo" width="56" height="56" loading="lazy">` : ''}
+    <div class="internship-copy"><div class="internship-headline"><h3><strong>${escape(entry.organization)}</strong>${entry.role ? `, ${escape(entry.role)}` : ''}</h3>${entry.date ? `<p class="internship-date">${escape(entry.date)}</p>` : ''}</div>
+    ${entry.department ? `<p class="internship-department">${escape(entry.department)}</p>` : ''}
+    ${entry.description ? `<p>${escape(entry.description)}</p>` : ''}${resources(entry.links)}</div>
+  </li>`;
+}
+
+function collaboration(entry) {
+  const logo = safeUrl(entry.logo, { image:true });
+  return `<li class="collaboration-entry">
+    ${logo ? `<img class="collaboration-logo" src="${escape(logo)}" alt="${escape(entry.organization)} logo" width="56" height="56" loading="lazy">` : ''}
+    <div class="collaboration-copy"><h3>${link(entry.title,entry.url)}${entry.organization ? ` (${escape(entry.organization)})` : ''}</h3>
+    ${entry.role || entry.description ? `<p>${entry.role ? `<strong>${escape(entry.role)}.</strong> ` : ''}${escape(entry.description || '')}</p>` : ''}
+    ${entry.application ? `<p class="collaboration-application">${escape(entry.application)}</p>` : ''}
+    ${entry.date ? `<p class="entry-date">${escape(entry.date)}</p>` : ''}${resources(entry.links)}</div>
+  </li>`;
+}
+
+function news(entry) {
+  const symbol = {paper:'🎉',award:'🏅',competition:'🏆'}[entry.type] || '📌';
+  const papers = entry.papers || (entry.paper ? [{name:entry.paper,url:entry.url}] : []);
+  const names = papers.map(paper=>link(paper.name,paper.url));
+  const paperList = names.length > 1 ? `${names.slice(0,-1).join(', ')} and ${names.at(-1)}` : names[0];
+  const message = entry.type === 'paper' && papers.length && entry.conference
+    ? `Our ${papers.length > 1 ? 'papers' : 'paper'} ${paperList} ${papers.length > 1 ? 'were' : 'was'} accepted to <strong>${escape(entry.conference)}</strong>!`
+    : link(entry.title,entry.url);
+  return `<li class="news-entry"><p class="entry-date">${escape(entry.date)}</p><span class="news-icon" aria-hidden="true">${symbol}</span><p class="news-message">${message}</p></li>`;
+}
+
+function outlineSection(site, key, id, title) {
+  const entries = site[key] || [];
+  if (!entries.length && !site.contentOutline?.enabled && key !== 'news') return '';
+  return `<section class="section outline-section" id="${id}" aria-labelledby="${id}-heading">
+    <div class="container section-grid"><div class="section-heading"><h2 id="${id}-heading">${title}</h2></div>
+    <div class="section-content">${entries.length ? `<ul class="experience-list">${entries.map(entry=>key === 'news' ? news(entry) : key === 'internships' ? internship(entry) : key === 'collaborations' ? collaboration(entry) : `<li>
+      ${entry.date ? `<p class="entry-date">${escape(entry.date)}</p>` : ''}
+      <h3>${key === 'honors' && entry.badge ? `<span class="award-badge">${escape(entry.badge)}</span> ` : ''}${link(entry.title,entry.url)}</h3>
+      ${entry.organization || entry.role ? `<p class="entry-meta">${escape([entry.organization,entry.role].filter(Boolean).join(' · '))}</p>` : ''}
+      ${entry.description ? `<p>${escape(entry.description)}</p>` : ''}${resources(entry.links)}</li>`).join('')}</ul>` : ''}
+    ${contentChecklist(site,key)}</div></div>
+  </section>`;
 }
 
 export function renderSite(site) {
-  const {profile:p, publications = [], projects = []} = site;
-  const categories = [...new Set(projects.flatMap(item => item.categories || []))];
-  const navItems = [['about','About'],['publications','Publications'],['projects','Projects'],['contact','Contact']];
+  const {profile:p, publications = []} = site;
+  const hasSection = key => key === 'news' || site[key]?.length || site.contentOutline?.enabled;
+  const navItems = [['about','About'],...(hasSection('news') ? [['news','News']] : []),['publications','Publications'],...(hasSection('honors') ? [['honors','Awards']] : []),...(hasSection('internships') ? [['internships','Experience']] : []),...(hasSection('collaborations') ? [['collaborations','Collaborative Projects']] : []),['contact','Contact']];
   const email = safeUrl(`mailto:${p.email}`);
+  const secondaryEmail = p.secondaryEmail ? safeUrl(`mailto:${p.secondaryEmail}`) : '';
   const github = safeUrl(p.github);
   const portrait = safeUrl(p.portrait, { image:true });
   const canonical = safeUrl(site.url);
@@ -97,7 +153,7 @@ export function renderSite(site) {
           <div class="social-links" aria-label="Profile links">
             ${email ? `<a href="${escape(email)}" aria-label="Email ${escape(p.name)}">${icon('mail')}</a>` : ''}
             ${github ? `<a href="${escape(github)}" aria-label="GitHub profile">${icon('github')}</a>` : ''}
-            ${p.scholar && safeUrl(p.scholar) ? link('Scholar',p.scholar) : ''}
+            ${p.scholar && safeUrl(p.scholar) ? `<a href="${escape(safeUrl(p.scholar))}" aria-label="Google Scholar profile" title="Google Scholar">${icon('education')}</a>` : ''}
             ${p.cv && safeUrl(p.cv) ? link('CV',p.cv) : ''}
           </div>
         </div>
@@ -105,29 +161,28 @@ export function renderSite(site) {
           <h2 id="about-heading">About Me</h2>
           <div class="biography">${(p.bio || []).map(paragraph => `<p>${escape(paragraph)}</p>`).join('')}</div>
           <div class="background-grid">
-            <div><h3>Research interests</h3><ul class="interests">${(p.interests || []).map(interest=>`<li>${escape(interest)}</li>`).join('')}</ul></div>
-            <div><h3>Education</h3><ul class="education">${(p.education || []).map(item=>`<li>${icon('education')}<div><p class="degree">${escape(item.degree)}</p><p class="education-detail">${escape(item.institution)}<br>${escape(item.period)}</p></div></li>`).join('')}</ul></div>
+            <div><h3>Research interests</h3><ul class="interests">${(p.interests || []).map(interest=>`<li>${escape(interest)}</li>`).join('')}</ul>${p.advisor?.name ? `<div class="advisor"><h3>Advisor</h3><div class="advisor-details"><p class="advisor-name">${link(p.advisor.name,p.advisor.url)}</p>${p.advisor.position ? `<p class="advisor-position">${escape(p.advisor.position)}</p>` : ''}${p.advisor.institution ? `<p class="advisor-institution">${escape(p.advisor.institution)}</p>` : ''}</div></div>` : ''}</div>
+            <div id="education"><h3>Education</h3><ul class="education">${(p.education || []).map(item=>`<li>${icon('education')}<div><p class="degree">${escape(item.degree)}</p><p class="education-detail">${escape(item.institution)}<br>${escape(item.period)}</p></div></li>`).join('')}</ul>${contentChecklist(site,'education')}</div>
           </div>
+          ${contentChecklist(site,'about')}
         </div>
       </div>
     </section>
+    ${outlineSection(site,'news','news','News')}
     <section class="section publications-section" id="publications" aria-labelledby="publications-heading">
       <div class="container section-grid"><div class="section-heading"><h2 id="publications-heading">Publications</h2></div>
-      <div class="section-content">${publications.length ? `<div class="publication-list">${publications.map(publication).join('')}</div>` : `<div class="empty-state"><p>Publication details will be added soon.</p><p class="muted">Selected papers and research contributions.</p></div>`}</div></div>
+      <div class="section-content">${publications.length ? `<p class="publication-legend">* Equal contribution · † Corresponding author</p>${publicationList(publications,p.name)}` : `<div class="empty-state"><p>Publication details will be added soon.</p><p class="muted">Selected papers and research contributions.</p></div>`}${contentChecklist(site,'publications')}</div></div>
     </section>
-    <section class="section projects-section" id="projects" aria-labelledby="projects-heading">
-      <div class="container section-grid"><div class="section-heading"><h2 id="projects-heading">Projects</h2></div>
-      <div class="section-content">${projects.length ? `
-        ${categories.length ? `<div class="project-filters" role="group" aria-label="Filter projects"><button type="button" data-filter="" aria-pressed="true">All</button>${categories.map(category=>`<button type="button" data-filter="${escape(category)}" aria-pressed="false">${escape(category)}</button>`).join('')}</div>` : ''}
-        <p class="sr-only" id="project-status" role="status" aria-live="polite"></p>
-        <div class="project-grid">${projects.map(project).join('')}</div>` : `<div class="empty-state"><p>Project details will be added soon.</p><p class="muted">Research projects, code, and demonstrations.</p></div>`}</div></div>
-    </section>
+    ${outlineSection(site,'honors','honors','Honors and Awards')}
+    ${outlineSection(site,'internships','internships','Internships')}
+    ${outlineSection(site,'collaborations','collaborations','Collaborative Projects')}
     <section class="section contact-section" id="contact" aria-labelledby="contact-heading">
       <div class="container section-grid"><div class="section-heading"><h2 id="contact-heading">Contact</h2></div>
       <div class="section-content"><ul class="contact-list">
         ${email ? `<li>${icon('mail')}<a href="${escape(email)}">${escape(p.email)}</a></li>` : ''}
+        ${secondaryEmail ? `<li>${icon('mail')}<a href="${escape(secondaryEmail)}">${escape(p.secondaryEmail)}</a></li>` : ''}
         ${github ? `<li>${icon('github')}<a href="${escape(github)}">${escape(github.replace(/^https?:\/\//,''))}</a></li>` : ''}
-      </ul></div></div>
+      </ul>${contentChecklist(site,'contact')}</div></div>
     </section>
   </main>
   <footer class="site-footer"><div class="container"><p>© ${new Date().getUTCFullYear()} ${escape(p.name)}</p><a href="#about" aria-label="Back to top">Back to top <span aria-hidden="true">↑</span></a></div></footer>

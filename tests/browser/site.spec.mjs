@@ -1,15 +1,21 @@
 import { test, expect } from '@playwright/test';
-import { readFile } from 'node:fs/promises';
-import { renderSite } from '../../scripts/render.mjs';
 
-test('homepage loads with real profile, local assets, empty content and no browser errors', async ({page})=>{
+test('homepage loads with real profile, ten publications, local assets and no browser errors', async ({page})=>{
   const errors=[];
   page.on('pageerror',error=>errors.push(error.message));
   page.on('response',response=>{if(response.status()>=400) errors.push(`${response.status()} ${response.url()}`);});
   await page.goto('/');
   await expect(page.getByRole('heading',{name:'Libo Zhu',exact:true})).toBeVisible();
-  await expect(page.getByText('Publication details will be added soon.',{exact:true})).toBeVisible();
-  await expect(page.getByText('Project details will be added soon.',{exact:true})).toBeVisible();
+  await expect(page.locator('.publication')).toHaveCount(10);
+  await expect(page.locator('.authors strong')).toHaveCount(10);
+  await expect(page.locator('.latest-publications .publication')).toHaveCount(1);
+  await expect(page.locator('.latest-publications h3').last()).toContainText('TRACE:');
+  for (const image of await page.locator('.publication-image').all()) {
+    await image.scrollIntoViewIfNeeded();
+    await expect.poll(()=>image.evaluate(img=>img.complete && img.naturalWidth>0)).toBe(true);
+  }
+  await expect(page.locator('#projects')).toHaveCount(0);
+  await expect(page.getByRole('heading',{name:'Collaborative Projects',exact:true})).toBeVisible();
   await page.evaluate(()=>document.fonts.ready);
   expect(await page.locator('.portrait').evaluate(image=>image.complete && image.naturalWidth>0)).toBe(true);
   expect(await page.evaluate(()=>document.fonts.check('18px Roboto'))).toBe(true);
@@ -24,8 +30,8 @@ test('mobile navigation opens, follows a section and closes with Escape', async 
   await expect(page.getByRole('navigation',{name:'Main navigation'})).toBeHidden();
   await menu.click();
   await expect(page.getByRole('button',{name:'Close navigation'})).toHaveAttribute('aria-expanded','true');
-  await page.getByRole('navigation').getByRole('link',{name:'Projects',exact:true}).click();
-  await expect(page).toHaveURL(/#projects$/);
+  await page.getByRole('navigation').getByRole('link',{name:'Collaborative Projects',exact:true}).click();
+  await expect(page).toHaveURL(/#collaborations$/);
   await expect(menu).toHaveAttribute('aria-expanded','false');
   await menu.click();
   await page.keyboard.press('Escape');
@@ -53,24 +59,6 @@ test('profile and navigation remain usable without JavaScript', async ({browser}
   await expect(page.getByRole('navigation').getByRole('link',{name:'Contact',exact:true})).toBeVisible();
   await expect(page.getByRole('link',{name:'labor030073@gmail.com',exact:true})).toHaveAttribute('href','mailto:labor030073@gmail.com');
   await context.close();
-});
-
-test('future project content can be filtered with a keyboard without publishing fixtures', async ({page})=>{
-  const site=JSON.parse(await readFile(new URL('../../content/site.json',import.meta.url),'utf8'));
-  site.projects=[
-    {title:'Restoration example',description:'Test-only content',categories:['Restoration'],links:[]},
-    {title:'Efficiency example',description:'Test-only content',categories:['Efficiency'],links:[]},
-  ];
-  await page.route('**/filter-fixture',route=>route.fulfill({status:200,contentType:'text/html',body:renderSite(site)}));
-  await page.goto('/filter-fixture');
-  const filter=page.getByRole('button',{name:'Restoration',exact:true});
-  await filter.focus();
-  await page.keyboard.press('Enter');
-  await expect(page.getByRole('heading',{name:'Restoration example'})).toBeVisible();
-  await expect(page.getByRole('heading',{name:'Efficiency example'})).toBeHidden();
-  await expect(page.getByRole('status')).toHaveText('1 project shown in Restoration.');
-  await page.getByRole('button',{name:'All',exact:true}).click();
-  await expect(page.locator('[data-project]:visible')).toHaveCount(2);
 });
 
 test('all fragment navigation targets exist and content has one main heading', async ({page})=>{

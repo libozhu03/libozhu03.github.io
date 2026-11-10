@@ -9,18 +9,352 @@
     "institution": "Shanghai Jiao Tong University",
     "institutionUrl": "https://www.sjtu.edu.cn/",
     "portrait": "/assets/portrait.jpg",
-    "email": "labor030073@gmail.com",
+    "email": "libozhu03@gmail.com",
+    "secondaryEmail": "labor030073@gmail.com",
     "github": "https://github.com/libozhu03",
+    "scholar": "https://scholar.google.com/citations?user=T_85880AAAAJ&hl=en",
     "bio": [
-      "I am a PhD student in Computer Science and Technology at Shanghai Jiao Tong University. My research interests include efficient diffusion models, image restoration, and model quantization.",
-      "I received my B.Eng. in Information Engineering from Shanghai Jiao Tong University in 2025."
+      "I am a PhD student in Computer Science and Technology at Shanghai Jiao Tong University. My research interests include efficient diffusion models, image restoration, and model quantization."
     ],
     "interests": ["Efficient diffusion models", "Image restoration", "Model quantization"],
+    "advisor": {"name":"Yulun Zhang","url":"https://yulunzhang.com/","position":"Associate Professor, Ph.D. Advisor","institution":"Shanghai Jiao Tong University"},
     "education": [
       { "degree": "PhD · Computer Science and Technology", "institution": "Shanghai Jiao Tong University", "period": "2025–present" },
       { "degree": "B.Eng. · Information Engineering", "institution": "Shanghai Jiao Tong University", "period": "2021–2025" }
     ]
   },
-  "publications": [],
-  "projects": []
+  "publications": [
+    {
+      "title": "TRACE: Trajectory Synchronization for Training-Free Resolution Extension in Video Generation",
+      "latest": true,
+      "authors": ["Libo Zhu", "Fan Li", "Zhixin Wang", "Binglu Wang", "Weisheng Dong", {"name":"Yulun Zhang","corresponding":true}],
+      "description": "Training-free resolution extension for video generation through synchronized low- and high-resolution denoising trajectories.",
+      "image": "/assets/publications/trace.png",
+      "imageWidth": 1000,
+      "imageHeight": 707,
+      "imageAlt": "TRACE high-resolution video generation examples and quality–efficiency comparisons",
+      "links": []
+    },
+    {
+      "title": "RIFLE: Removal of Image Flicker-Banding via Latent Diffusion Enhancement",
+      "authors": [{"name":"Libo Zhu","equal":true}, {"name":"Zihan Zhou","equal":true}, "Xiaoyang Liu", "Weihang Zhang", "Keyu Shi", "Yifan Fu", {"name":"Yulun Zhang","corresponding":true}],
+      "venue": "NeurIPS",
+      "acceptedConference": "NeurIPS 2026",
+      "sortDate": "2026-12",
+      "firstPublished": "2025-09-29",
+      "year": 2026,
+      "description": "Diffusion-based flicker-banding removal with task-specific priors, synthetic training data, and a paired real-world benchmark.",
+      "image": "/assets/publications/rifle.png",
+      "imageWidth": 1000,
+      "imageHeight": 502,
+      "imageAlt": "Examples of screen flicker-banding and restoration with RIFLE",
+      "url": "https://arxiv.org/abs/2509.24644",
+      "links": [{"label":"Paper","url":"https://arxiv.org/abs/2509.24644"},{"label":"Code","url":"https://github.com/libozhu03/RIFLE"}]
+    },
+    {
+      "title": "Combined Flicker-banding and Moire Removal for Screen-Captured Images",
+      "sortDate": "2026-02-02",
+      "authors": [{"name":"Libo Zhu","equal":true}, {"name":"Zihan Zhou","equal":true}, "Zhiyi Zhou", "Yiyang Qu", "Weihang Zhang", "Keyu Shi", "Yifan Fu", {"name":"Yulun Zhang","corresponding":true}],
+      "venue": "arXiv preprint",
+      "year": 2026,
+      "description": "Joint removal of moiré and flicker-banding with a unified restoration framework and an ISP-based degradation simulation pipeline.",
+      "image": "/assets/publications/clear.png",
+      "imageWidth": 1200,
+      "imageHeight": 589,
+      "imageAlt": "CLEAR Figure 1: flicker-banding and moiré examples, with input, restored, and ground-truth comparisons",
+      "url": "https://arxiv.org/abs/2602.01559",
+      "links": [{"label":"Paper","url":"https://arxiv.org/abs/2602.01559"},{"label":"Repository","url":"https://github.com/libozhu03/CLEAR"}]
+    },
+    {
+      "title": "QArtSR: Quantization via Reverse-Module and Timestep-Retraining in One-Step Diffusion based Image Super-Resolution",
+      "sortDate": "2025-03-07",
+      "authors": [{"name":"Libo Zhu","equal":true}, {"name":"Haotong Qin","equal":true}, "Kaicheng Yang", "Wenbo Li", "Yong Guo", {"name":"Yulun Zhang","corresponding":true}, "Susanto Rahardja", "Xiaokang Yang"],
+      "venue": "arXiv preprint",
+      "year": 2025,
+      "description": "Low-bit quantization of one-step diffusion super-resolution through timestep retraining and reversed per-module calibration.",
+      "image": "/assets/publications/qartsr.png",
+      "imageWidth": 1000,
+      "imageHeight": 564,
+      "imageAlt": "QArtSR reversed per-module quantization and timestep retraining framework",
+      "url": "https://arxiv.org/abs/2503.05584",
+      "links": [{"label":"Paper","url":"https://arxiv.org/abs/2503.05584"},{"label":"Code","url":"https://github.com/libozhu03/QArtSR"}]
+    },
+    {
+      "title": "PassionSR: Post-Training Quantization with Adaptive Scale in One-Step Diffusion based Image Super-Resolution",
+      "authors": ["Libo Zhu", "Jianze Li", {"name":"Haotong Qin","corresponding":true}, "Wenbo Li", {"name":"Yulun Zhang","corresponding":true}, "Yong Guo", "Xiaokang Yang"],
+      "venue": "CVPR",
+      "acceptedConference": "CVPR 2025",
+      "sortDate": "2025-06",
+      "year": 2025,
+      "description": "Efficient one-step diffusion super-resolution using adaptive quantizers and distributed calibration for 8-bit and 6-bit inference.",
+      "image": "/assets/publications/passionsr.png",
+      "imageWidth": 1000,
+      "imageHeight": 619,
+      "imageAlt": "PassionSR model simplification, learnable quantizers, and distributed calibration framework",
+      "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Zhu_PassionSR_Post-Training_Quantization_with_Adaptive_Scale_in_One-Step_Diffusion_based_CVPR_2025_paper.html",
+      "links": [{"label":"Paper","url":"https://openaccess.thecvf.com/content/CVPR2025/html/Zhu_PassionSR_Post-Training_Quantization_with_Adaptive_Scale_in_One-Step_Diffusion_based_CVPR_2025_paper.html"},{"label":"Code","url":"https://github.com/libozhu03/PassionSR"}]
+    },
+    {
+      "title": "VDFP: Video Deflickering with Flicker-banding Priors",
+      "authors": [
+        {
+          "name": "Zhiyi Zhou",
+          "equal": true
+        },
+        {
+          "name": "Libo Zhu",
+          "equal": true
+        },
+        "Zihan Zhou",
+        {
+          "name": "Yulun Zhang",
+          "corresponding": true
+        },
+        "Xiaokang Yang"
+      ],
+      "venue": "arXiv preprint",
+      "year": 2026,
+      "sortDate": "2026-05-20",
+      "imageAlt": "VDFP real-world and simulated video flicker-banding datasets and restoration comparisons",
+      "image": "/assets/publications/vdfp.png",
+      "imageWidth": 1600,
+      "imageHeight": 900,
+      "url": "https://arxiv.org/abs/2605.21079",
+      "links": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2605.21079"
+        },
+        {
+          "label": "Code",
+          "url": "https://github.com/ZhiyiZZhou/VDFP"
+        },
+        {
+          "label": "Project",
+          "url": "https://ZhiyiZZhou.github.io/VDFP"
+        }
+      ]
+    },
+    {
+      "title": "Bricker to BRACE: A Bracket Exposure RAW Dataset and Restoration Model for Flicker-Banding",
+      "authors": [
+        {
+          "name": "Zihan Zhou",
+          "equal": true
+        },
+        {
+          "name": "Libo Zhu",
+          "equal": true
+        },
+        "Jue Gong",
+        "Zhiyi Zhou",
+        {
+          "name": "Jiezhang Cao",
+          "corresponding": true
+        },
+        "Yong Guo",
+        {
+          "name": "Yulun Zhang",
+          "corresponding": true
+        }
+      ],
+      "venue": "NeurIPS",
+      "acceptedConference": "NeurIPS 2026",
+      "year": 2026,
+      "sortDate": "2026-12",
+      "firstPublished": "2026-06-29",
+      "imageAlt": "Bricker bracketed-exposure dataset and BRACE restoration examples",
+      "image": "/assets/publications/brace.png",
+      "imageWidth": 1796,
+      "imageHeight": 567,
+      "url": "https://arxiv.org/abs/2606.29845",
+      "links": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2606.29845"
+        },
+        {
+          "label": "Code",
+          "url": "https://github.com/ZZH-qwq/BRACE"
+        },
+        {
+          "label": "Project",
+          "url": "https://zzh-qwq.github.io/BRACE/"
+        },
+        {
+          "label": "Dataset",
+          "url": "https://huggingface.co/datasets/ZZH-qwq/Bricker"
+        }
+      ]
+    },
+    {
+      "title": "QuantFace: Efficient Quantization for Face Restoration",
+      "authors": [
+        {
+          "name": "Jiatong Li",
+          "equal": true
+        },
+        {
+          "name": "Libo Zhu",
+          "equal": true
+        },
+        "Haotong Qin",
+        "Jingkai Wang",
+        {
+          "name": "Linghe Kong",
+          "corresponding": true
+        },
+        "Guihai Chen",
+        {
+          "name": "Yulun Zhang",
+          "corresponding": true
+        },
+        "Xiaokang Yang"
+      ],
+      "venue": "arXiv preprint",
+      "year": 2025,
+      "sortDate": "2025-06-01",
+      "imageAlt": "QuantFace low-bit face restoration quantization framework",
+      "image": "/assets/publications/quantface.png",
+      "imageWidth": 1305,
+      "imageHeight": 568,
+      "url": "https://arxiv.org/abs/2506.00820",
+      "links": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2506.00820"
+        },
+        {
+          "label": "Code",
+          "url": "https://github.com/jiatongli2024/QuantFace"
+        }
+      ]
+    },
+    {
+      "title": "QuantVSR: Low-Bit Post-Training Quantization for Real-World Video Super-Resolution",
+      "authors": [
+        "Bowen Chai",
+        "Zheng Chen",
+        "Libo Zhu",
+        "Wenbo Li",
+        "Yong Guo",
+        {
+          "name": "Yulun Zhang",
+          "corresponding": true
+        }
+      ],
+      "venue": "AAAI",
+      "acceptedConference": "AAAI 2026",
+      "year": 2026,
+      "sortDate": "2026-01",
+      "firstPublished": "2025-08-06",
+      "imageAlt": "QuantVSR spatio-temporal complexity-aware low-bit quantization framework",
+      "image": "/assets/publications/quantvsr.png",
+      "imageWidth": 1548,
+      "imageHeight": 782,
+      "url": "https://arxiv.org/abs/2508.04485",
+      "links": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2508.04485"
+        },
+        {
+          "label": "Code",
+          "url": "https://github.com/bowenchai/QuantVSR"
+        }
+      ]
+    },
+    {
+      "title": "Freqformer: Image-Demoiréing Transformer via Effective Frequency Decomposition",
+      "authors": [
+        {
+          "name": "Xiaoyang Liu",
+          "equal": true
+        },
+        {
+          "name": "Bolin Qiu",
+          "equal": true
+        },
+        "Zheng Chen",
+        "Libo Zhu",
+        "Zihan Zhou",
+        "Kai Liu",
+        "Jiezhang Cao",
+        {
+          "name": "Yulun Zhang",
+          "corresponding": true
+        }
+      ],
+      "venue": "ECCV",
+      "acceptedConference": "ECCV 2026",
+      "year": 2026,
+      "sortDate": "2026-09",
+      "firstPublished": "2025-05-25",
+      "imageAlt": "Freqformer frequency decomposition and dual-branch restoration architecture",
+      "image": "/assets/publications/freqformer.png",
+      "imageWidth": 1520,
+      "imageHeight": 617,
+      "url": "https://arxiv.org/abs/2505.19120",
+      "links": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2505.19120"
+        },
+        {
+          "label": "Code",
+          "url": "https://github.com/xyLiu339/Freqformer"
+        }
+      ]
+    }
+  ],
+  "news": [
+    {"date":"2026.09","type":"paper","papers":[{"name":"RIFLE","url":"https://arxiv.org/abs/2509.24644"},{"name":"BRACE","url":"https://arxiv.org/abs/2606.29845"}],"conference":"NeurIPS 2026"},
+    {"date":"2026.06","type":"paper","paper":"Freqformer","conference":"ECCV 2026","url":"https://arxiv.org/abs/2505.19120"},
+    {"date":"2025.11","type":"paper","paper":"QuantVSR","conference":"AAAI 2026","url":"https://arxiv.org/abs/2508.04485"},
+    {"date":"2025.11","type":"competition","title":"Our team won the National Grand Prize in the 19th “Challenge Cup”!"},
+    {"date":"2025.06","type":"award","title":"Awarded the Ye Jun & Shen Nanpeng Zhiyuan Outstanding Scholarship (Top 1%), SJTU."},
+    {"date":"2025.06","type":"award","title":"Awarded the Outstanding Bachelor's Thesis honor (Top 1%), SJTU."},
+    {"date":"2025.04","type":"award","title":"Named an Outstanding Graduate of Shanghai (Top 1%)."},
+    {"date":"2025.02","type":"paper","paper":"PassionSR","conference":"CVPR 2025","url":"https://openaccess.thecvf.com/content/CVPR2025/html/Zhu_PassionSR_Post-Training_Quantization_with_Adaptive_Scale_in_One-Step_Diffusion_based_CVPR_2025_paper.html"},
+    {"date":"2024.03","type":"award","title":"Awarded the Shaoqiu Scholarship (Top 1%), SJTU."},
+    {"date":"2024.01","type":"competition","title":"Our team received an M Award in MCM/ICM."},
+    {"date":"2023.09","type":"competition","title":"Our team won the National First Prize in the National Undergraduate Electronics Design Contest!"}
+  ],
+  "honors": [
+    {"badge":"National Grand Prize","title":"19th “Challenge Cup” National Undergraduate Extracurricular Academic Science and Technology Competition","date":"2025"},
+    {"badge":"Top 1%","title":"Ye Jun & Shen Nanpeng Zhiyuan Outstanding Scholarship, SJTU","date":"2025"},
+    {"badge":"Top 1%","title":"Outstanding Bachelor's Thesis, SJTU","date":"2025"},
+    {"badge":"Top 1%","title":"Outstanding Graduate of Shanghai","date":"2025"},
+    {"badge":"Top 1%","title":"Shaoqiu Scholarship, SJTU","date":"2024"},
+    {"badge":"M Award","title":"Mathematical Contest in Modeling (MCM/ICM)","date":"2024"},
+    {"badge":"National First Prize","title":"National Undergraduate Electronics Design Contest","date":"2023"},
+    {"badge":"Top 5%","title":"Zhiyuan Honors Scholarship, SJTU","date":"2021–2024"}
+  ],
+  "internships": [
+    {"organization":"Huawei","role":"AI Algorithm Intern","department":"Noah’s Ark Lab, 2012 Laboratories","date":"2026.02 – Present","logo":"/assets/organizations/huawei.png"}
+  ],
+  "collaborations": [
+    {
+      "title":"Exploratory Collaboration on Image/Video Demoiréing and Flicker-Banding Removal",
+      "organization":"Huawei",
+      "role":"Project Member",
+      "description":"Participated in task investigation, new dataset construction, image/video flicker-banding removal algorithm design, project coordination, and delivery.",
+      "application":"The technology has been deployed on Huawei Pura 90 series smartphones.",
+      "logo":"/assets/organizations/huawei.png"
+    },
+    {
+      "title":"Mobile Customization of Efficient Diffusion-Based Image Reconstruction Algorithms",
+      "organization":"Transsion",
+      "role":"Project Member",
+      "description":"Responsible for quantization algorithm design.",
+      "logo":"/assets/organizations/transsion.png"
+    },
+    {
+      "title":"University-Industry Research on High-Fidelity Image Restoration with Lightweight Diffusion Models",
+      "organization":"Huawei",
+      "role":"Project Lead",
+      "description":"Primarily responsible for designing the core low-bit quantization algorithms.",
+      "logo":"/assets/organizations/huawei.png"
+    }
+  ]
 }
