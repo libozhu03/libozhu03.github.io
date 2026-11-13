@@ -36,7 +36,7 @@
       "imageWidth": 1000,
       "imageHeight": 707,
       "imageAlt": "TRACE high-resolution video generation examples and quality–efficiency comparisons",
-      "links": []
+      "links": [{"label":"Project","url":"https://labor555.github.io/TRACE/"},{"label":"Code","url":"https://github.com/libozhu03/TRACE"}]
     },
     {
       "title": "RIFLE: Removal of Image Flicker-Banding via Latent Diffusion Enhancement",
@@ -52,7 +52,7 @@
       "imageHeight": 502,
       "imageAlt": "Examples of screen flicker-banding and restoration with RIFLE",
       "url": "https://arxiv.org/abs/2509.24644",
-      "links": [{"label":"Paper","url":"https://arxiv.org/abs/2509.24644"},{"label":"Code","url":"https://github.com/libozhu03/RIFLE"}]
+      "links": [{"label":"Paper","url":"https://arxiv.org/abs/2509.24644"},{"label":"Project","url":"https://libozhu.com/RIFLE/"},{"label":"Code","url":"https://github.com/libozhu03/RIFLE"},{"label":"Dataset","url":"https://huggingface.co/datasets/Laborrrrrrrr/RIFLE"}]
     },
     {
       "title": "Combined Flicker-banding and Moire Removal for Screen-Captured Images",
